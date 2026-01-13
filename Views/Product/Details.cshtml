@@ -1,0 +1,709 @@
+@model WigsByChikaambrose.Web.ViewModels.ProductViewModel
+
+@{
+    ViewData["Title"] = Model.Name;
+}
+
+<!-- Breadcrumb -->
+<nav aria-label="breadcrumb" class="py-3">
+    <div class="container">
+        <ol class="breadcrumb mb-0 fade-in">
+            <li class="breadcrumb-item">
+                <a href="@Url.Action("Index", "Home")" class="text-decoration-none">
+                    <i class="fas fa-home me-1"></i>Home
+                </a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="@Url.Action("Index", "Product")" class="text-decoration-none">Products</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">@Model.Name</li>
+        </ol>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="row g-5">
+        <!-- Product Images -->
+        <div class="col-lg-6 fade-in">
+            <div class="product-gallery">
+                <!-- Main Image -->
+                <div class="main-image-container mb-4">
+                    <div class="card glass-card overflow-hidden">
+                        @if (Model.Images.Any())
+                        {
+                            <div class="position-relative">
+                                <img id="mainImage" src="@Model.Images.First().ImageUrl" 
+                                     alt="@Model.Images.First().AltText" 
+                                     class="card-img-top product-main-image" 
+                                     style="height: 500px; object-fit: cover; cursor: zoom-in;">
+                                
+                                <!-- Image Overlay Effects -->
+                                <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center opacity-0 transition-opacity" 
+                                     id="imageOverlay" style="background: rgba(0,0,0,0.7); transition: opacity 0.3s ease;">
+                                    <i class="fas fa-search-plus fa-2x text-white"></i>
+                                </div>
+                                
+                                <!-- Badges -->
+                                <div class="position-absolute top-0 start-0 m-3">
+                                    @if (Model.IsFeatured)
+                                    {
+                                        <span class="badge bg-warning text-dark mb-2 d-block">
+                                            <i class="fas fa-star me-1"></i>Featured
+                                        </span>
+                                    }
+                                    @if (!Model.IsInStock)
+                                    {
+                                        <span class="badge bg-danger">
+                                            <i class="fas fa-times me-1"></i>Out of Stock
+                                        </span>
+                                    }
+                                    else if (Model.StockQuantity <= 5)
+                                    {
+                                        <span class="badge bg-warning text-dark">
+                                            <i class="fas fa-exclamation me-1"></i>Low Stock
+                                        </span>
+                                    }
+                                </div>
+                                
+                                <!-- Wishlist Button -->
+                                <div class="position-absolute top-0 end-0 m-3">
+                                    <button class="btn btn-light rounded-circle" onclick="toggleWishlist(@Model.Id)" 
+                                            title="Add to Wishlist">
+                                        <i class="far fa-heart fa-lg"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="card-img-top bg-gradient-secondary d-flex align-items-center justify-content-center text-white" 
+                                 style="height: 500px;">
+                                <div class="text-center">
+                                    <i class="fas fa-image fa-4x mb-3 opacity-50"></i>
+                                    <h5>No Image Available</h5>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+                
+                <!-- Thumbnail Images -->
+                @if (Model.Images.Count > 1)
+                {
+                    <div class="thumbnail-container">
+                        <div class="row g-2">
+                            @foreach (var image in Model.Images.Take(4))
+                            {
+                                <div class="col-3">
+                                    <div class="card glass-card thumbnail-card" onclick="changeMainImage('@image.ImageUrl', '@image.AltText')">
+                                        <img src="@image.ImageUrl" alt="@image.AltText" 
+                                             class="card-img-top thumbnail-image" 
+                                             style="height: 100px; object-fit: cover; cursor: pointer;">
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+        
+        <!-- Product Information -->
+        <div class="col-lg-6 fade-in">
+            <div class="product-info">
+                <!-- Product Title & Rating -->
+                <div class="mb-4">
+                    <h1 class="display-6 fw-bold text-gradient mb-2">@Model.Name</h1>
+                    <p class="text-muted mb-3">
+                        <i class="fas fa-tag me-2"></i>@Model.CategoryName
+                        <span class="mx-2">•</span>
+                        <span class="text-uppercase">SKU: @Model.SKU</span>
+                    </p>
+                    
+                    @if (Model.Reviews.Any())
+                    {
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="me-3">
+                                @for (int i = 1; i <= 5; i++)
+                                {
+                                    if (i <= Model.AverageRating)
+                                    {
+                                        <i class="fas fa-star text-warning"></i>
+                                    }
+                                    else
+                                    {
+                                        <i class="far fa-star text-muted"></i>
+                                    }
+                                }
+                            </div>
+                            <span class="text-muted">
+                                @Model.AverageRating.ToString("F1") (@Model.ReviewCount reviews)
+                            </span>
+                        </div>
+                    }
+                </div>
+                
+                <!-- Price -->
+                <div class="price-section mb-4">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div>
+                            <span class="h2 text-gradient fw-bold mb-0">$@Model.Price.ToString("F2")</span>
+                            <small class="text-muted d-block">Free shipping on orders over $150</small>
+                        </div>
+                        @if (Model.IsInStock)
+                        {
+                            <span class="badge bg-success fs-6 px-3 py-2">
+                                <i class="fas fa-check me-1"></i>In Stock (@Model.StockQuantity available)
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-danger fs-6 px-3 py-2">
+                                <i class="fas fa-times me-1"></i>Out of Stock
+                            </span>
+                        }
+                    </div>
+                </div>
+                
+                <!-- Product Details -->
+                <div class="product-details mb-4">
+                    <div class="card glass-card">
+                        <div class="card-body">
+                            <h5 class="card-title fw-bold mb-3">
+                                <i class="fas fa-info-circle me-2 text-primary"></i>Product Details
+                            </h5>
+                            <div class="row g-3">
+                                <div class="col-6">
+                                    <div class="detail-item">
+                                        <i class="fas fa-layer-group me-2 text-muted"></i>
+                                        <strong>Type:</strong> @Model.WigType
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="detail-item">
+                                        <i class="fas fa-ruler me-2 text-muted"></i>
+                                        <strong>Length:</strong> @Model.Length
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="detail-item">
+                                        <i class="fas fa-palette me-2 text-muted"></i>
+                                        <strong>Color:</strong> @Model.Color
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="detail-item">
+                                        <i class="fas fa-magic me-2 text-muted"></i>
+                                        <strong>Texture:</strong> @Model.Texture
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Quantity & Add to Cart -->
+                @if (Model.IsInStock)
+                {
+                    <div class="purchase-section mb-4">
+                        <div class="row g-3 align-items-end">
+                            <div class="col-md-4">
+                                <label for="quantity" class="form-label fw-bold">Quantity</label>
+                                <div class="input-group">
+                                    <button class="btn btn-outline-secondary" type="button" onclick="changeQuantity(-1)">
+                                        <i class="fas fa-minus"></i>
+                                    </button>
+                                    <input type="number" class="form-control text-center" id="quantity" 
+                                           value="1" min="1" max="@Model.StockQuantity">
+                                    <button class="btn btn-outline-secondary" type="button" onclick="changeQuantity(1)">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="d-grid gap-2">
+                                    <button class="btn btn-primary btn-lg" onclick="addToCart(@Model.Id)">
+                                        <i class="fas fa-cart-plus me-2"></i>Add to Cart
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                
+                <!-- Action Buttons -->
+                <div class="action-buttons mb-4">
+                    <div class="row g-2">
+                        <div class="col-6">
+                            <button class="btn btn-outline-primary w-100" onclick="toggleWishlist(@Model.Id)">
+                                <i class="far fa-heart me-2"></i>Add to Wishlist
+                            </button>
+                        </div>
+                        <div class="col-6">
+                            <button class="btn btn-outline-secondary w-100" onclick="shareProduct()">
+                                <i class="fas fa-share-alt me-2"></i>Share
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Services -->
+                <div class="services-section">
+                    <div class="card glass-card">
+                        <div class="card-body">
+                            <h6 class="card-title fw-bold mb-3">
+                                <i class="fas fa-concierge-bell me-2 text-primary"></i>Our Services
+                            </h6>
+                            <div class="row g-3 small">
+                                <div class="col-12">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-shipping-fast me-3 text-success"></i>
+                                        <div>
+                                            <strong>Free Shipping</strong>
+                                            <div class="text-muted">On orders over $150</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-cut me-3 text-info"></i>
+                                        <div>
+                                            <strong>Professional Installation</strong>
+                                            <div class="text-muted">Book an appointment</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-undo me-3 text-warning"></i>
+                                        <div>
+                                            <strong>30-Day Returns</strong>
+                                            <div class="text-muted">Hassle-free returns</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Product Description & Reviews -->
+    <div class="row mt-5">
+        <div class="col-12">
+            <div class="card glass-card fade-in">
+                <div class="card-header">
+                    <ul class="nav nav-tabs card-header-tabs" id="productTabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="description-tab" data-bs-toggle="tab" 
+                                    data-bs-target="#description" type="button" role="tab">
+                                <i class="fas fa-align-left me-2"></i>Description
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="reviews-tab" data-bs-toggle="tab" 
+                                    data-bs-target="#reviews" type="button" role="tab">
+                                <i class="fas fa-star me-2"></i>Reviews (@Model.ReviewCount)
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="care-tab" data-bs-toggle="tab" 
+                                    data-bs-target="#care" type="button" role="tab">
+                                <i class="fas fa-heart me-2"></i>Care Instructions
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-body">
+                    <div class="tab-content" id="productTabsContent">
+                        <!-- Description Tab -->
+                        <div class="tab-pane fade show active" id="description" role="tabpanel">
+                            <div class="row">
+                                <div class="col-lg-8">
+                                    <h5 class="fw-bold mb-3">Product Description</h5>
+                                    <p class="lead">@Model.Description</p>
+                                    <p>
+                                        This premium @Model.WigType.ToString().ToLower() wig features @Model.Texture.ToLower() 
+                                        texture in a beautiful @Model.Color.ToLower() color. With a length of @Model.Length, 
+                                        it's perfect for creating stunning, natural-looking hairstyles.
+                                    </p>
+                                    <p>
+                                        Our wigs are carefully crafted using the finest materials and construction techniques 
+                                        to ensure durability, comfort, and a natural appearance. Each wig undergoes rigorous 
+                                        quality control to meet our exacting standards.
+                                    </p>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="card bg-light">
+                                        <div class="card-body">
+                                            <h6 class="fw-bold mb-3">Key Features</h6>
+                                            <ul class="list-unstyled">
+                                                <li class="mb-2">
+                                                    <i class="fas fa-check text-success me-2"></i>Premium quality materials
+                                                </li>
+                                                <li class="mb-2">
+                                                    <i class="fas fa-check text-success me-2"></i>Natural-looking hairline
+                                                </li>
+                                                <li class="mb-2">
+                                                    <i class="fas fa-check text-success me-2"></i>Comfortable fit
+                                                </li>
+                                                <li class="mb-2">
+                                                    <i class="fas fa-check text-success me-2"></i>Easy to style
+                                                </li>
+                                                <li class="mb-2">
+                                                    <i class="fas fa-check text-success me-2"></i>Adjustable cap size
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Reviews Tab -->
+                        <div class="tab-pane fade" id="reviews" role="tabpanel">
+                            @if (Model.Reviews.Any())
+                            {
+                                <div class="reviews-section">
+                                    <div class="row mb-4">
+                                        <div class="col-md-6">
+                                            <h5 class="fw-bold">Customer Reviews</h5>
+                                            <div class="d-flex align-items-center mb-3">
+                                                <div class="me-3">
+                                                    @for (int i = 1; i <= 5; i++)
+                                                    {
+                                                        if (i <= Model.AverageRating)
+                                                        {
+                                                            <i class="fas fa-star text-warning fa-lg"></i>
+                                                        }
+                                                        else
+                                                        {
+                                                            <i class="far fa-star text-muted fa-lg"></i>
+                                                        }
+                                                    }
+                                                </div>
+                                                <span class="h5 mb-0">@Model.AverageRating.ToString("F1") out of 5</span>
+                                            </div>
+                                            <p class="text-muted">Based on @Model.ReviewCount customer reviews</p>
+                                        </div>
+                                        <div class="col-md-6 text-md-end">
+                                            <button class="btn btn-primary" onclick="writeReview()">
+                                                <i class="fas fa-edit me-2"></i>Write a Review
+                                            </button>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="reviews-list">
+                                        @foreach (var review in Model.Reviews.Take(5))
+                                        {
+                                            <div class="review-item mb-4 pb-4 border-bottom">
+                                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                                    <div>
+                                                        <h6 class="fw-bold mb-1">@review.CustomerName</h6>
+                                                        <div class="mb-2">
+                                                            @for (int i = 1; i <= 5; i++)
+                                                            {
+                                                                if (i <= review.Rating)
+                                                                {
+                                                                    <i class="fas fa-star text-warning"></i>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <i class="far fa-star text-muted"></i>
+                                                                }
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                    <small class="text-muted">@review.CreatedAt.ToString("MMM dd, yyyy")</small>
+                                                </div>
+                                                @if (!string.IsNullOrEmpty(review.Title))
+                                                {
+                                                    <h6 class="fw-semibold mb-2">@review.Title</h6>
+                                                }
+                                                <p class="mb-0">@review.Comment</p>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="text-center py-5">
+                                    <i class="fas fa-star fa-3x text-muted mb-3"></i>
+                                    <h5 class="text-muted">No reviews yet</h5>
+                                    <p class="text-muted mb-4">Be the first to review this product!</p>
+                                    <button class="btn btn-primary" onclick="writeReview()">
+                                        <i class="fas fa-edit me-2"></i>Write the First Review
+                                    </button>
+                                </div>
+                            }
+                        </div>
+                        
+                        <!-- Care Instructions Tab -->
+                        <div class="tab-pane fade" id="care" role="tabpanel">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <h5 class="fw-bold mb-3">Care Instructions</h5>
+                                    <div class="care-instructions">
+                                        <div class="mb-4">
+                                            <h6 class="fw-semibold">
+                                                <i class="fas fa-tint me-2 text-primary"></i>Washing
+                                            </h6>
+                                            <ul class="list-unstyled ms-4">
+                                                <li class="mb-2">• Wash every 10-15 wears or when needed</li>
+                                                <li class="mb-2">• Use cool water and sulfate-free shampoo</li>
+                                                <li class="mb-2">• Gently massage, don't rub or scrub</li>
+                                                <li class="mb-2">• Rinse thoroughly with cool water</li>
+                                            </ul>
+                                        </div>
+                                        
+                                        <div class="mb-4">
+                                            <h6 class="fw-semibold">
+                                                <i class="fas fa-wind me-2 text-primary"></i>Drying
+                                            </h6>
+                                            <ul class="list-unstyled ms-4">
+                                                <li class="mb-2">• Gently pat with a towel, don't wring</li>
+                                                <li class="mb-2">• Air dry on a wig stand</li>
+                                                <li class="mb-2">• Avoid direct sunlight or heat</li>
+                                                <li class="mb-2">• Never sleep in a wet wig</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="mb-4">
+                                        <h6 class="fw-semibold">
+                                            <i class="fas fa-cut me-2 text-primary"></i>Styling
+                                        </h6>
+                                        <ul class="list-unstyled ms-4">
+                                            <li class="mb-2">• Use wide-tooth comb when wet</li>
+                                            <li class="mb-2">• Start detangling from ends</li>
+                                            <li class="mb-2">• Use heat protectant before styling</li>
+                                            <li class="mb-2">• Keep heat tools under 300°F</li>
+                                        </ul>
+                                    </div>
+                                    
+                                    <div class="mb-4">
+                                        <h6 class="fw-semibold">
+                                            <i class="fas fa-archive me-2 text-primary"></i>Storage
+                                        </h6>
+                                        <ul class="list-unstyled ms-4">
+                                            <li class="mb-2">• Store on a wig stand or mannequin</li>
+                                            <li class="mb-2">• Keep in a cool, dry place</li>
+                                            <li class="mb-2">• Cover with a silk scarf if needed</li>
+                                            <li class="mb-2">• Avoid plastic bags for long-term storage</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Image Gallery Functions
+        function changeMainImage(imageUrl, altText) {
+            const mainImage = document.getElementById('mainImage');
+            mainImage.src = imageUrl;
+            mainImage.alt = altText;
+            
+            // Update thumbnail active state
+            document.querySelectorAll('.thumbnail-card').forEach(card => {
+                card.classList.remove('border-primary');
+            });
+            event.currentTarget.classList.add('border-primary');
+        }
+        
+        // Quantity Controls
+        function changeQuantity(delta) {
+            const quantityInput = document.getElementById('quantity');
+            const currentValue = parseInt(quantityInput.value);
+            const newValue = currentValue + delta;
+            const maxValue = parseInt(quantityInput.max);
+            
+            if (newValue >= 1 && newValue <= maxValue) {
+                quantityInput.value = newValue;
+            }
+        }
+        
+        // Add to Cart
+        function addToCart(productId) {
+            const quantity = document.getElementById('quantity').value;
+            
+            Swal.fire({
+                icon: 'success',
+                title: 'Added to Cart!',
+                text: `${quantity} item(s) added to your cart.`,
+                showConfirmButton: false,
+                timer: 1500,
+                toast: true,
+                position: 'top-end'
+            });
+        }
+        
+        // Wishlist Toggle
+        function toggleWishlist(productId) {
+            const heartIcons = document.querySelectorAll('.fa-heart');
+            
+            heartIcons.forEach(icon => {
+                if (icon.classList.contains('far')) {
+                    icon.classList.remove('far');
+                    icon.classList.add('fas');
+                    icon.style.color = '#e74c3c';
+                } else {
+                    icon.classList.remove('fas');
+                    icon.classList.add('far');
+                    icon.style.color = '';
+                }
+            });
+            
+            Swal.fire({
+                icon: 'success',
+                title: 'Added to Wishlist!',
+                showConfirmButton: false,
+                timer: 1000,
+                toast: true,
+                position: 'top-end'
+            });
+        }
+        
+        // Share Product
+        function shareProduct() {
+            if (navigator.share) {
+                navigator.share({
+                    title: '@Model.Name',
+                    text: '@Model.Description',
+                    url: window.location.href
+                });
+            } else {
+                // Fallback - copy to clipboard
+                navigator.clipboard.writeText(window.location.href).then(() => {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Link Copied!',
+                        text: 'Product link copied to clipboard.',
+                        showConfirmButton: false,
+                        timer: 1500,
+                        toast: true,
+                        position: 'top-end'
+                    });
+                });
+            }
+        }
+        
+        // Write Review
+        function writeReview() {
+            Swal.fire({
+                title: 'Write a Review',
+                html: `
+                    <div class="text-start">
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Rating</label>
+                            <div class="rating-input">
+                                <i class="fas fa-star rating-star" data-rating="1"></i>
+                                <i class="fas fa-star rating-star" data-rating="2"></i>
+                                <i class="fas fa-star rating-star" data-rating="3"></i>
+                                <i class="fas fa-star rating-star" data-rating="4"></i>
+                                <i class="fas fa-star rating-star" data-rating="5"></i>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Title</label>
+                            <input type="text" class="form-control" id="reviewTitle" placeholder="Review title">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Comment</label>
+                            <textarea class="form-control" id="reviewComment" rows="4" placeholder="Share your experience..."></textarea>
+                        </div>
+                    </div>
+                `,
+                showCancelButton: true,
+                confirmButtonText: 'Submit Review',
+                confirmButtonColor: '#667eea',
+                didOpen: () => {
+                    // Rating star functionality
+                    const stars = document.querySelectorAll('.rating-star');
+                    let selectedRating = 0;
+                    
+                    stars.forEach((star, index) => {
+                        star.addEventListener('click', () => {
+                            selectedRating = index + 1;
+                            updateStars(selectedRating);
+                        });
+                        
+                        star.addEventListener('mouseover', () => {
+                            updateStars(index + 1);
+                        });
+                    });
+                    
+                    document.querySelector('.rating-input').addEventListener('mouseleave', () => {
+                        updateStars(selectedRating);
+                    });
+                    
+                    function updateStars(rating) {
+                        stars.forEach((star, index) => {
+                            if (index < rating) {
+                                star.classList.add('text-warning');
+                                star.classList.remove('text-muted');
+                            } else {
+                                star.classList.add('text-muted');
+                                star.classList.remove('text-warning');
+                            }
+                        });
+                    }
+                    
+                    updateStars(0);
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Review Submitted!',
+                        text: 'Thank you for your review. It will be published after moderation.',
+                        confirmButtonColor: '#667eea'
+                    });
+                }
+            });
+        }
+        
+        // Image hover effects
+        document.addEventListener('DOMContentLoaded', function() {
+            const mainImage = document.getElementById('mainImage');
+            const overlay = document.getElementById('imageOverlay');
+            
+            if (mainImage && overlay) {
+                mainImage.addEventListener('mouseenter', () => {
+                    overlay.style.opacity = '1';
+                });
+                
+                mainImage.addEventListener('mouseleave', () => {
+                    overlay.style.opacity = '0';
+                });
+                
+                mainImage.addEventListener('click', () => {
+                    // Image zoom functionality
+                    Swal.fire({
+                        imageUrl: mainImage.src,
+                        imageAlt: mainImage.alt,
+                        showConfirmButton: false,
+                        showCloseButton: true,
+                        background: 'rgba(0,0,0,0.9)',
+                        customClass: {
+                            image: 'img-fluid'
+                        }
+                    });
+                });
+            }
+        });
+    </script>
+    
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+}

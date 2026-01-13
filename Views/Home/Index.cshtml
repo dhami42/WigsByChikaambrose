@@ -1,0 +1,548 @@
+﻿@model List<WigsByChikaambrose.Web.ViewModels.ProductViewModel>
+
+@{
+    ViewData["Title"] = "Home";
+}
+
+<!-- Hero Section with Beautiful Background -->
+<section class="hero-section">
+    <div class="container">
+        <div class="row align-items-center min-vh-75">
+            <div class="col-lg-6 hero-content">
+                <div class="fade-in">
+                    <h1 class="display-3 fw-bold text-white mb-4">
+                        Beautiful Wigs by 
+                        <span class="text-brand">Chikaambrose</span>
+                    </h1>
+                    <p class="lead text-white mb-4 fs-5">
+                        Discover our premium collection of world-class wigs, from synthetic to human hair, 
+                        designed to make you look and feel absolutely amazing.
+                    </p>
+                    <div class="d-flex flex-wrap gap-3">
+                        <a href="@Url.Action("Index", "Product")" class="btn btn-light btn-lg px-4 py-3 hover-feminine">
+                            <i class="fas fa-shopping-bag me-2"></i>Shop Now
+                        </a>
+                        <a href="@Url.Action("About", "Home")" class="btn btn-outline-light btn-lg px-4 py-3">
+                            <i class="fas fa-play me-2"></i>Learn More
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 d-none d-lg-block">
+                <div class="hero-3d-element text-center">
+                    <img src="/images/products/wavy-curly-bone-straight.jpeg" alt="Beautiful Wig Collection" 
+                         class="img-fluid rounded-4 shadow-lg" 
+                         style="max-height: 500px; object-fit: cover; transform: perspective(1000px) rotateY(-15deg); filter: drop-shadow(0 20px 40px rgba(255, 107, 107, 0.3));">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Colorful Section Divider -->
+<div class="section-divider"></div>
+
+<!-- Stats Section -->
+<section class="py-5 bg-gradient-feminine">
+    <div class="container">
+        <div class="row text-center text-white">
+            <div class="col-md-3 mb-4 fade-in">
+                <div class="service-icon mb-3">
+                    <i class="fas fa-users fa-3x"></i>
+                </div>
+                <h3 class="fw-bold counter" data-target="10000">0</h3>
+                <p class="mb-0">Happy Customers</p>
+            </div>
+            <div class="col-md-3 mb-4 fade-in">
+                <div class="service-icon mb-3">
+                    <i class="fas fa-crown fa-3x"></i>
+                </div>
+                <h3 class="fw-bold counter" data-target="3">0</h3>
+                <p class="mb-0">Exclusive Wigs</p>
+            </div>
+            <div class="col-md-3 mb-4 fade-in">
+                <div class="service-icon mb-3">
+                    <i class="fas fa-star fa-3x"></i>
+                </div>
+                <h3 class="fw-bold">4.9/5</h3>
+                <p class="mb-0">Customer Rating</p>
+            </div>
+            <div class="col-md-3 mb-4 fade-in">
+                <div class="service-icon mb-3">
+                    <i class="fas fa-shipping-fast fa-3x"></i>
+                </div>
+                <h3 class="fw-bold">24h</h3>
+                <p class="mb-0">Fast Delivery</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Colorful Section Divider -->
+<div class="section-divider"></div>
+
+<!-- Wig Categories Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="text-center mb-5 fade-in">
+            <h2 class="display-5 fw-bold text-gradient mb-3">Shop by Category</h2>
+            <p class="lead text-muted">Find the perfect wig for your style and needs</p>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-lg-3 col-md-6 fade-in">
+                <div class="card h-100 glass-card text-center category-card card-float">
+                    <div class="card-body p-4">
+                        <div class="category-icon mb-3">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <h5 class="fw-bold mb-3">Lace Front Wigs</h5>
+                        <p class="text-muted mb-4">Natural hairline with premium lace construction</p>
+                        <a href="@Url.Action("Index", "Product", new { wigType = 6 })" class="btn btn-outline-primary hover-feminine">
+                            Shop Now <i class="fas fa-arrow-right ms-2"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-3 col-md-6 fade-in">
+                <div class="card h-100 glass-card text-center category-card card-float">
+                    <div class="card-body p-4">
+                        <div class="category-icon mb-3">
+                            <i class="fas fa-magic"></i>
+                        </div>
+                        <h5 class="fw-bold mb-3">Synthetic Wigs</h5>
+                        <p class="text-muted mb-4">High-quality synthetic fibers, easy maintenance</p>
+                        <a href="@Url.Action("Index", "Product", new { wigType = 1 })" class="btn btn-outline-primary hover-feminine">
+                            Shop Now <i class="fas fa-arrow-right ms-2"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-3 col-md-6 fade-in">
+                <div class="card h-100 glass-card text-center category-card card-float">
+                    <div class="card-body p-4">
+                        <div class="category-icon mb-3">
+                            <i class="fas fa-gem"></i>
+                        </div>
+                        <h5 class="fw-bold mb-3">Human Hair Wigs</h5>
+                        <p class="text-muted mb-4">100% human hair, style and color as desired</p>
+                        <a href="@Url.Action("Index", "Product", new { wigType = 2 })" class="btn btn-outline-primary hover-feminine">
+                            Shop Now <i class="fas fa-arrow-right ms-2"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-3 col-md-6 fade-in">
+                <div class="card h-100 glass-card text-center category-card card-float">
+                    <div class="card-body p-4">
+                        <div class="category-icon mb-3">
+                            <i class="fas fa-puzzle-piece"></i>
+                        </div>
+                        <h5 class="fw-bold mb-3">Closures & Frontals</h5>
+                        <p class="text-muted mb-4">Complete your look with matching pieces</p>
+                        <a href="@Url.Action("Index", "Product", new { wigType = 3 })" class="btn btn-outline-primary hover-feminine">
+                            Shop Now <i class="fas fa-arrow-right ms-2"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Colorful Section Divider -->
+<div class="section-divider"></div>
+
+<!-- Featured Products Section -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="text-center mb-5 fade-in">
+            <h2 class="display-5 fw-bold text-gradient mb-3">Our Exclusive Wig Collection</h2>
+            <p class="lead text-muted">Premium handpicked wigs featuring our signature styles and colors</p>
+        </div>
+        
+        @if (Model.Any())
+        {
+            <div class="row g-4">
+                @foreach (var product in Model.Take(6))
+                {
+                    <div class="col-lg-4 col-md-6 fade-in">
+                        <div class="product-card-3d">
+                            <div class="card h-100 product-card-inner">
+                                <div class="product-image-container">
+                                    @if (product.Images.Any())
+                                    {
+                                        <img src="@product.Images.First().ImageUrl" class="card-img-top product-image" 
+                                             alt="@product.Images.First().AltText">
+                                    }
+                                    else
+                                    {
+                                        <img src="/images/products/wavy-curly-bone-straight.jpeg" class="card-img-top product-image" 
+                                             alt="@product.Name" style="height: 280px; object-fit: cover;">
+                                    }
+                                    <div class="position-absolute top-0 end-0 m-3">
+                                        @if (product.IsFeatured)
+                                        {
+                                            <span class="badge bg-warning text-dark">
+                                                <i class="fas fa-star me-1"></i>Featured
+                                            </span>
+                                        }
+                                    </div>
+                                    <div class="position-absolute top-0 start-0 m-3">
+                                        <button class="btn btn-light btn-sm rounded-circle" onclick="toggleWishlist(@product.Id)" 
+                                                title="Add to Wishlist">
+                                            <i class="far fa-heart"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <div class="card-body d-flex flex-column p-4">
+                                    <div class="d-flex justify-content-between align-items-start mb-2">
+                                        <h5 class="card-title fw-bold mb-0">@product.Name</h5>
+                                    </div>
+                                    
+                                    <p class="text-muted small mb-2">
+                                        <i class="fas fa-tag me-1"></i>@product.CategoryName
+                                    </p>
+                                    
+                                    <p class="card-text flex-grow-1 text-muted">
+                                        @(product.Description.Length > 100 ? product.Description.Substring(0, 100) + "..." : product.Description)
+                                    </p>
+                                    
+                                    <div class="product-details mb-3">
+                                        <div class="row g-2 small text-muted">
+                                            <div class="col-6">
+                                                <i class="fas fa-palette me-1"></i>@product.Color
+                                            </div>
+                                            <div class="col-6">
+                                                <i class="fas fa-ruler me-1"></i>@product.Length
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="mt-auto">
+                                        <div class="d-flex justify-content-between align-items-center mb-3">
+                                            <div class="price-tag">
+                                                $@product.Price.ToString("F2")
+                                            </div>
+                                            @if (product.IsInStock)
+                                            {
+                                                <span class="badge bg-success">
+                                                    <i class="fas fa-check me-1"></i>In Stock
+                                                </span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge bg-danger">
+                                                    <i class="fas fa-times me-1"></i>Out of Stock
+                                                </span>
+                                            }
+                                        </div>
+                                        
+                                        <div class="d-grid gap-2">
+                                            <a href="@Url.Action("Details", "Product", new { id = product.Id })" 
+                                               class="btn btn-primary">
+                                                <i class="fas fa-eye me-2"></i>View Details
+                                            </a>
+                                            @if (product.IsInStock)
+                                            {
+                                                <button class="btn btn-outline-primary" onclick="addToCart(@product.Id)">
+                                                    <i class="fas fa-cart-plus me-2"></i>Add to Cart
+                                                </button>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+            
+            <div class="text-center mt-5 fade-in">
+                <a href="@Url.Action("Index", "Product")" class="btn btn-outline-primary btn-lg px-5">
+                    <i class="fas fa-th-large me-2"></i>View Our Complete Collection
+                </a>
+            </div>
+        }
+        else
+        {
+            <div class="text-center py-5 fade-in">
+                <div class="mb-4">
+                    <i class="fas fa-box-open fa-4x text-muted"></i>
+                </div>
+                <h4 class="text-muted">No featured products available</h4>
+                <p class="text-muted">Check back soon for amazing deals!</p>
+                <a href="@Url.Action("Index", "Product")" class="btn btn-primary">
+                    <i class="fas fa-shopping-bag me-2"></i>Browse All Products
+                </a>
+            </div>
+        }
+    </div>
+</section>
+
+<!-- Services Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="text-center mb-5 fade-in">
+            <h2 class="display-5 fw-bold text-gradient mb-3">Our Premium Services</h2>
+            <p class="lead text-muted">Experience excellence with our comprehensive wig services</p>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-lg-4 col-md-6 fade-in">
+                <div class="card h-100 text-center glass-card">
+                    <div class="card-body p-4">
+                        <div class="service-icon mb-4">
+                            <i class="fas fa-cut fa-4x"></i>
+                        </div>
+                        <h4 class="fw-bold mb-3">Professional Installation</h4>
+                        <p class="text-muted mb-4">
+                            Expert wig installation and styling services to ensure the perfect fit and natural look. 
+                            Our certified stylists will make you look flawless.
+                        </p>
+                        <a href="#" class="btn btn-outline-primary">
+                            <i class="fas fa-calendar me-2"></i>Book Appointment
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6 fade-in">
+                <div class="card h-100 text-center glass-card">
+                    <div class="card-body p-4">
+                        <div class="service-icon mb-4">
+                            <i class="fas fa-shipping-fast fa-4x"></i>
+                        </div>
+                        <h4 class="fw-bold mb-3">Express Delivery</h4>
+                        <p class="text-muted mb-4">
+                            Lightning-fast shipping with real-time tracking. Get your premium wigs delivered 
+                            safely to your doorstep within 24-48 hours.
+                        </p>
+                        <a href="#" class="btn btn-outline-primary">
+                            <i class="fas fa-truck me-2"></i>Track Order
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6 fade-in">
+                <div class="card h-100 text-center glass-card">
+                    <div class="card-body p-4">
+                        <div class="service-icon mb-4">
+                            <i class="fas fa-shield-alt fa-4x"></i>
+                        </div>
+                        <h4 class="fw-bold mb-3">Quality Guarantee</h4>
+                        <p class="text-muted mb-4">
+                            100% satisfaction guarantee with premium quality assurance. We stand behind 
+                            every product with our comprehensive warranty program.
+                        </p>
+                        <a href="#" class="btn btn-outline-primary">
+                            <i class="fas fa-info-circle me-2"></i>Learn More
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Testimonials Section -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="text-center mb-5 fade-in">
+            <h2 class="display-5 fw-bold text-gradient mb-3">What Our Customers Say</h2>
+            <p class="lead text-muted">Real reviews from real customers who love our wigs</p>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-lg-4 fade-in">
+                <div class="card h-100 glass-card">
+                    <div class="card-body p-4">
+                        <div class="star-rating mb-3">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p class="mb-3">"Just got my Wavy Curly Bone Straight 24\" wig and I'm obsessed! The quality is outstanding and it looks so natural. Worth every penny of the $600!"</p>
+                        <div class="d-flex align-items-center">
+                            <div class="rounded-circle bg-gradient-primary d-flex align-items-center justify-content-center me-3" 
+                                 style="width: 50px; height: 50px;">
+                                <i class="fas fa-user text-white"></i>
+                            </div>
+                            <div>
+                                <h6 class="mb-0 fw-bold">Sarah Johnson</h6>
+                                <small class="text-muted">Verified Customer</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 fade-in">
+                <div class="card h-100 glass-card">
+                    <div class="card-body p-4">
+                        <div class="star-rating mb-3">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p class="mb-3">"The 6x6 closure unit with dark chocolate brown and ash blonde highlights is perfection! The color blend is amazing and the quality is top-notch. $620 well spent!"</p>
+                        <div class="d-flex align-items-center">
+                            <div class="rounded-circle bg-gradient-secondary d-flex align-items-center justify-content-center me-3" 
+                                 style="width: 50px; height: 50px;">
+                                <i class="fas fa-user text-white"></i>
+                            </div>
+                            <div>
+                                <h6 class="mb-0 fw-bold">Maria Rodriguez</h6>
+                                <small class="text-muted">Verified Customer</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 fade-in">
+                <div class="card h-100 glass-card">
+                    <div class="card-body p-4">
+                        <div class="star-rating mb-3">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p class="mb-3">"The Copper Mix Unit 24\" frontal is absolutely gorgeous! The vibrant copper tones are stunning and the 24-inch length is perfect. Professional installation made it look flawless!"</p>
+                        <div class="d-flex align-items-center">
+                            <div class="rounded-circle bg-gradient-accent d-flex align-items-center justify-content-center me-3" 
+                                 style="width: 50px; height: 50px;">
+                                <i class="fas fa-user text-white"></i>
+                            </div>
+                            <div>
+                                <h6 class="mb-0 fw-bold">Ashley Chen</h6>
+                                <small class="text-muted">Verified Customer</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Newsletter Section -->
+<section class="py-5 bg-gradient-feminine">
+    <div class="container">
+        <div class="row align-items-center text-white">
+            <div class="col-lg-6 fade-in">
+                <h3 class="fw-bold mb-3">Stay in the Loop</h3>
+                <p class="mb-4">Subscribe to our newsletter for exclusive offers, styling tips, and new product announcements.</p>
+            </div>
+            <div class="col-lg-6 fade-in">
+                <form class="d-flex gap-2">
+                    <input type="email" class="form-control form-control-lg" placeholder="Enter your email address">
+                    <button type="submit" class="btn btn-light btn-lg px-4 hover-feminine">
+                        <i class="fas fa-paper-plane me-2"></i>Subscribe
+                    </button>
+                </form>
+                <small class="text-white-50 mt-2 d-block">We respect your privacy. Unsubscribe at any time.</small>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        function addToCart(productId) {
+            // TODO: Implement add to cart functionality
+            Swal.fire({
+                icon: 'success',
+                title: 'Added to Cart!',
+                text: 'Product has been added to your cart.',
+                showConfirmButton: false,
+                timer: 1500,
+                toast: true,
+                position: 'top-end'
+            });
+        }
+        
+        function toggleWishlist(productId) {
+            // TODO: Implement wishlist functionality
+            const heartIcon = event.target;
+            if (heartIcon.classList.contains('far')) {
+                heartIcon.classList.remove('far');
+                heartIcon.classList.add('fas');
+                heartIcon.style.color = '#e74c3c';
+                
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Added to Wishlist!',
+                    showConfirmButton: false,
+                    timer: 1000,
+                    toast: true,
+                    position: 'top-end'
+                });
+            } else {
+                heartIcon.classList.remove('fas');
+                heartIcon.classList.add('far');
+                heartIcon.style.color = '';
+            }
+        }
+        
+        // Counter Animation
+        function animateCounters() {
+            const counters = document.querySelectorAll('.counter');
+            
+            counters.forEach(counter => {
+                const target = parseInt(counter.getAttribute('data-target'));
+                const increment = target / 100;
+                let current = 0;
+                
+                const updateCounter = () => {
+                    if (current < target) {
+                        current += increment;
+                        counter.textContent = Math.floor(current).toLocaleString();
+                        setTimeout(updateCounter, 20);
+                    } else {
+                        counter.textContent = target.toLocaleString();
+                    }
+                };
+                
+                updateCounter();
+            });
+        }
+        
+        // Trigger counter animation when section is visible
+        const observerOptions = {
+            threshold: 0.5
+        };
+        
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && entry.target.classList.contains('bg-gradient-primary')) {
+                    animateCounters();
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            const statsSection = document.querySelector('.bg-gradient-primary');
+            if (statsSection) {
+                observer.observe(statsSection);
+            }
+        });
+    </script>
+    
+    <!-- SweetAlert2 for modern alerts -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+}
+
+

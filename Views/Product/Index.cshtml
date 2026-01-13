@@ -1,0 +1,477 @@
+@model List<WigsByChikaambrose.Web.ViewModels.ProductViewModel>
+
+@{
+    ViewData["Title"] = "Products";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <!-- Sidebar Filters -->
+        <div class="col-lg-3 col-md-4">
+            <div class="sticky-top" style="top: 100px;">
+                <div class="card glass-card mb-4">
+                    <div class="card-header bg-gradient-primary text-white">
+                        <h5 class="mb-0">
+                            <i class="fas fa-filter me-2"></i>Filters
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <form method="get" id="filterForm">
+                            <!-- Search -->
+                            <div class="mb-4">
+                                <label for="search" class="form-label fw-bold">
+                                    <i class="fas fa-search me-2"></i>Search
+                                </label>
+                                <input type="text" class="form-control" id="search" name="search" 
+                                       value="@ViewBag.CurrentSearch" placeholder="Search products...">
+                            </div>
+                            
+                            <!-- Wig Type Filter -->
+                            <div class="mb-4">
+                                <label for="wigType" class="form-label fw-bold">
+                                    <i class="fas fa-tags me-2"></i>Wig Type
+                                </label>
+                                <select class="form-select" id="wigType" name="wigType">
+                                    <option value="">All Types</option>
+                                    @foreach (var wigType in Enum.GetValues<WigsByChikaambrose.Models.WigType>())
+                                    {
+                                        <option value="@((int)wigType)" selected="@(ViewBag.CurrentWigType?.Equals(wigType) == true)">
+                                            @wigType
+                                        </option>
+                                    }
+                                </select>
+                            </div>
+                            
+                            <!-- Price Range -->
+                            <div class="mb-4">
+                                <label class="form-label fw-bold">
+                                    <i class="fas fa-dollar-sign me-2"></i>Price Range
+                                </label>
+                                <div class="row g-2">
+                                    <div class="col-6">
+                                        <input type="number" class="form-control" placeholder="Min" name="minPrice" 
+                                               value="@ViewBag.MinPrice">
+                                    </div>
+                                    <div class="col-6">
+                                        <input type="number" class="form-control" placeholder="Max" name="maxPrice" 
+                                               value="@ViewBag.MaxPrice">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Color Filter -->
+                            <div class="mb-4">
+                                <label class="form-label fw-bold">
+                                    <i class="fas fa-palette me-2"></i>Color
+                                </label>
+                                <div class="d-flex flex-wrap gap-2">
+                                    <button type="button" class="btn btn-outline-secondary btn-sm color-filter" 
+                                            data-color="Black">Black</button>
+                                    <button type="button" class="btn btn-outline-secondary btn-sm color-filter" 
+                                            data-color="Brown">Brown</button>
+                                    <button type="button" class="btn btn-outline-secondary btn-sm color-filter" 
+                                            data-color="Blonde">Blonde</button>
+                                    <button type="button" class="btn btn-outline-secondary btn-sm color-filter" 
+                                            data-color="Red">Red</button>
+                                </div>
+                            </div>
+                            
+                            <!-- Length Filter -->
+                            <div class="mb-4">
+                                <label class="form-label fw-bold">
+                                    <i class="fas fa-ruler me-2"></i>Length
+                                </label>
+                                <div class="d-flex flex-wrap gap-2">
+                                    <button type="button" class="btn btn-outline-secondary btn-sm length-filter" 
+                                            data-length="Short">Short (8-12")</button>
+                                    <button type="button" class="btn btn-outline-secondary btn-sm length-filter" 
+                                            data-length="Medium">Medium (14-18")</button>
+                                    <button type="button" class="btn btn-outline-secondary btn-sm length-filter" 
+                                            data-length="Long">Long (20-24")</button>
+                                </div>
+                            </div>
+                            
+                            <div class="d-grid gap-2">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-search me-2"></i>Apply Filters
+                                </button>
+                                <a href="@Url.Action("Index")" class="btn btn-outline-secondary">
+                                    <i class="fas fa-times me-2"></i>Clear All
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                
+                <!-- Quick Categories -->
+                <div class="card glass-card">
+                    <div class="card-header bg-gradient-secondary text-white">
+                        <h6 class="mb-0">
+                            <i class="fas fa-th-large me-2"></i>Quick Categories
+                        </h6>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="list-group list-group-flush">
+                            <a href="@Url.Action("Index", new { wigType = 6 })" 
+                               class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                                <span><i class="fas fa-star me-2 text-warning"></i>Lace Front Wigs</span>
+                                <span class="badge bg-primary rounded-pill">Popular</span>
+                            </a>
+                            <a href="@Url.Action("Index", new { wigType = 1 })" 
+                               class="list-group-item list-group-item-action">
+                                <i class="fas fa-magic me-2 text-info"></i>Synthetic Wigs
+                            </a>
+                            <a href="@Url.Action("Index", new { wigType = 2 })" 
+                               class="list-group-item list-group-item-action">
+                                <i class="fas fa-gem me-2 text-success"></i>Human Hair Wigs
+                            </a>
+                            <a href="@Url.Action("Index", new { wigType = 3 })" 
+                               class="list-group-item list-group-item-action">
+                                <i class="fas fa-puzzle-piece me-2 text-danger"></i>Closures
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Products Grid -->
+        <div class="col-lg-9 col-md-8">
+            <!-- Header -->
+            <div class="d-flex justify-content-between align-items-center mb-4 fade-in">
+                <div>
+                    <h2 class="text-brand fw-bold mb-1">WigsByChikaambrose Exclusive Collection</h2>
+                    <p class="text-muted mb-0">Showing @Model.Count premium handpicked wigs</p>
+                </div>
+                <div class="d-flex align-items-center gap-3">
+                    <!-- Sort Options -->
+                    <select class="form-select" style="width: auto;" onchange="sortProducts(this.value)">
+                        <option value="name">Sort by Name</option>
+                        <option value="price-low">Price: Low to High</option>
+                        <option value="price-high">Price: High to Low</option>
+                        <option value="newest">Newest First</option>
+                        <option value="popular">Most Popular</option>
+                    </select>
+                    
+                    <!-- View Toggle -->
+                    <div class="btn-group" role="group">
+                        <button type="button" class="btn btn-outline-primary active" id="gridView" onclick="toggleView('grid')">
+                            <i class="fas fa-th"></i>
+                        </button>
+                        <button type="button" class="btn btn-outline-primary" id="listView" onclick="toggleView('list')">
+                            <i class="fas fa-list"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            @if (Model.Any())
+            {
+                <!-- Products Grid -->
+                <div class="row g-4" id="productGrid">
+                    @foreach (var product in Model)
+                    {
+                        <div class="col-xl-4 col-lg-6 col-md-6 product-item fade-in">
+                            <div class="product-card-3d">
+                                <div class="card h-100 product-card-inner">
+                                    <div class="product-image-container position-relative">
+                                        @if (product.Images.Any())
+                                        {
+                                            <img src="@product.Images.First().ImageUrl" class="card-img-top product-image" 
+                                                 alt="@product.Images.First().AltText">
+                                        }
+                                        else
+                                        {
+                                            <img src="/images/products/wavy-curly-bone-straight.jpeg" class="card-img-top product-image" 
+                                                 alt="@product.Name">
+                                        }
+                                        
+                                        <!-- Badges -->
+                                        <div class="position-absolute top-0 start-0 m-3">
+                                            @if (product.IsFeatured)
+                                            {
+                                                <span class="badge bg-warning text-dark mb-1 d-block">
+                                                    <i class="fas fa-star me-1"></i>Featured
+                                                </span>
+                                            }
+                                            @if (!product.IsInStock)
+                                            {
+                                                <span class="badge bg-danger">
+                                                    <i class="fas fa-times me-1"></i>Out of Stock
+                                                </span>
+                                            }
+                                        </div>
+                                        
+                                        <!-- Quick Actions -->
+                                        <div class="position-absolute top-0 end-0 m-3">
+                                            <div class="d-flex flex-column gap-2">
+                                                <button class="btn btn-light btn-sm rounded-circle" onclick="toggleWishlist(@product.Id)" 
+                                                        title="Add to Wishlist">
+                                                    <i class="far fa-heart"></i>
+                                                </button>
+                                                <button class="btn btn-light btn-sm rounded-circle" onclick="quickView(@product.Id)" 
+                                                        title="Quick View">
+                                                    <i class="fas fa-eye"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Hover Overlay -->
+                                        <div class="position-absolute bottom-0 start-0 end-0 p-3 bg-gradient-primary text-white opacity-0 
+                                                    d-flex justify-content-center align-items-center transition-opacity hover-overlay" 
+                                             style="transition: opacity 0.3s ease;">
+                                            @if (product.IsInStock)
+                                            {
+                                                <button class="btn btn-light" onclick="addToCart(@product.Id)">
+                                                    <i class="fas fa-cart-plus me-2"></i>Add to Cart
+                                                </button>
+                                            }
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="card-body p-4">
+                                        <div class="d-flex justify-content-between align-items-start mb-2">
+                                            <h5 class="card-title fw-bold mb-0 flex-grow-1">@product.Name</h5>
+                                        </div>
+                                        
+                                        <p class="text-muted small mb-2">
+                                            <i class="fas fa-tag me-1"></i>@product.CategoryName
+                                        </p>
+                                        
+                                        <p class="card-text text-muted mb-3" style="height: 3rem; overflow: hidden;">
+                                            @(product.Description.Length > 80 ? product.Description.Substring(0, 80) + "..." : product.Description)
+                                        </p>
+                                        
+                                        <!-- Product Details -->
+                                        <div class="row g-2 mb-3 small text-muted">
+                                            <div class="col-6">
+                                                <i class="fas fa-palette me-1"></i>@product.Color
+                                            </div>
+                                            <div class="col-6">
+                                                <i class="fas fa-ruler me-1"></i>@product.Length
+                                            </div>
+                                            <div class="col-6">
+                                                <i class="fas fa-layer-group me-1"></i>@product.WigType
+                                            </div>
+                                            <div class="col-6">
+                                                <i class="fas fa-box me-1"></i>@product.StockQuantity left
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Price and Actions -->
+                                        <div class="d-flex justify-content-between align-items-center mb-3">
+                                            <div class="price-tag">
+                                                $@product.Price.ToString("F2")
+                                            </div>
+                                            @if (product.IsInStock)
+                                            {
+                                                <span class="badge bg-success">
+                                                    <i class="fas fa-check me-1"></i>Available
+                                                </span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge bg-danger">
+                                                    <i class="fas fa-times me-1"></i>Sold Out
+                                                </span>
+                                            }
+                                        </div>
+                                        
+                                        <div class="d-grid">
+                                            <a href="@Url.Action("Details", new { id = product.Id })" 
+                                               class="btn btn-primary">
+                                                <i class="fas fa-eye me-2"></i>View Details
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+                
+                <!-- Pagination -->
+                <div class="d-flex justify-content-center mt-5 fade-in">
+                    <nav aria-label="Product pagination">
+                        <ul class="pagination">
+                            <li class="page-item disabled">
+                                <a class="page-link" href="#" tabindex="-1">
+                                    <i class="fas fa-chevron-left"></i>
+                                </a>
+                            </li>
+                            <li class="page-item active">
+                                <a class="page-link" href="#">1</a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="#">2</a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="#">3</a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="#">
+                                    <i class="fas fa-chevron-right"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            }
+            else
+            {
+                <!-- No Products Found -->
+                <div class="text-center py-5 fade-in">
+                    <div class="mb-4">
+                        <i class="fas fa-search fa-4x text-muted"></i>
+                    </div>
+                    <h4 class="text-muted mb-3">No products found</h4>
+                    <p class="text-muted mb-4">Try adjusting your search criteria or browse our categories.</p>
+                    <div class="d-flex justify-content-center gap-3">
+                        <a href="@Url.Action("Index")" class="btn btn-primary">
+                            <i class="fas fa-refresh me-2"></i>View All Products
+                        </a>
+                        <button class="btn btn-outline-primary" onclick="clearFilters()">
+                            <i class="fas fa-times me-2"></i>Clear Filters
+                        </button>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Add to Cart Function
+        function addToCart(productId) {
+            if (typeof Swal !== 'undefined') {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Added to Cart!',
+                    text: 'Product has been added to your cart.',
+                    showConfirmButton: false,
+                    timer: 1500,
+                    toast: true,
+                    position: 'top-end'
+                });
+            } else {
+                alert('Product added to cart!');
+            }
+        }
+        
+        // Wishlist Toggle
+        function toggleWishlist(productId) {
+            const heartIcon = event.target;
+            if (heartIcon.classList.contains('far')) {
+                heartIcon.classList.remove('far');
+                heartIcon.classList.add('fas');
+                heartIcon.style.color = '#e74c3c';
+                
+                if (typeof Swal !== 'undefined') {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Added to Wishlist!',
+                        showConfirmButton: false,
+                        timer: 1000,
+                        toast: true,
+                        position: 'top-end'
+                    });
+                } else {
+                    alert('Added to wishlist!');
+                }
+            } else {
+                heartIcon.classList.remove('fas');
+                heartIcon.classList.add('far');
+                heartIcon.style.color = '';
+                
+                if (typeof Swal !== 'undefined') {
+                    Swal.fire({
+                        icon: 'info',
+                        title: 'Removed from Wishlist',
+                        showConfirmButton: false,
+                        timer: 1000,
+                        toast: true,
+                        position: 'top-end'
+                    });
+                }
+            }
+        }
+        
+        // Quick View
+        function quickView(productId) {
+            if (typeof Swal !== 'undefined') {
+                Swal.fire({
+                    title: 'Quick View',
+                    text: 'Quick view functionality coming soon!',
+                    icon: 'info',
+                    confirmButtonColor: '#667eea'
+                });
+            } else {
+                alert('Quick view coming soon!');
+            }
+        }
+        
+        // View Toggle
+        function toggleView(viewType) {
+            const gridBtn = document.getElementById('gridView');
+            const listBtn = document.getElementById('listView');
+            const productGrid = document.getElementById('productGrid');
+            
+            if (viewType === 'grid') {
+                gridBtn.classList.add('active');
+                listBtn.classList.remove('active');
+                productGrid.className = 'row g-4';
+                
+                // Reset product items to grid layout
+                document.querySelectorAll('.product-item').forEach(item => {
+                    item.className = 'col-xl-4 col-lg-6 col-md-6 product-item fade-in';
+                });
+            } else {
+                listBtn.classList.add('active');
+                gridBtn.classList.remove('active');
+                productGrid.className = 'row g-3';
+                
+                // Change to list layout
+                document.querySelectorAll('.product-item').forEach(item => {
+                    item.className = 'col-12 product-item fade-in';
+                });
+            }
+        }
+        
+        // Sort Products
+        function sortProducts(sortBy) {
+            console.log('Sorting by:', sortBy);
+            // TODO: Implement sorting functionality
+        }
+        
+        // Clear Filters
+        function clearFilters() {
+            document.getElementById('filterForm').reset();
+            window.location.href = '@Url.Action("Index")';
+        }
+        
+        // Hover effects for product cards
+        document.addEventListener('DOMContentLoaded', function() {
+            const productCards = document.querySelectorAll('.product-card-3d');
+            
+            productCards.forEach(card => {
+                const overlay = card.querySelector('.hover-overlay');
+                
+                card.addEventListener('mouseenter', function() {
+                    if (overlay) {
+                        overlay.style.opacity = '1';
+                    }
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    if (overlay) {
+                        overlay.style.opacity = '0';
+                    }
+                });
+            });
+        });
+    </script>
+    
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+}

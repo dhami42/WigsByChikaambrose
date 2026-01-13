@@ -1,0 +1,416 @@
+@{
+    ViewData["Title"] = "Contact Us";
+}
+
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="container">
+        <div class="row align-items-center min-vh-50">
+            <div class="col-lg-6 hero-content">
+                <div class="fade-in">
+                    <h1 class="display-4 fw-bold text-white mb-4">
+                        Get in <span class="text-gradient">Touch</span>
+                    </h1>
+                    <p class="lead text-white-50 mb-4">
+                        Located in beautiful Cyprus, we'd love to hear from you. Send us a message and we'll respond as soon as possible.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Information -->
+<section class="py-5">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-lg-4 col-md-6 fade-in">
+                <div class="card h-100 glass-card text-center">
+                    <div class="card-body p-4">
+                        <div class="service-icon mb-4">
+                            <i class="fas fa-map-marker-alt fa-3x text-gradient"></i>
+                        </div>
+                        <h4 class="fw-bold mb-3">Visit Our Salon</h4>
+                        <p class="text-muted mb-3">
+                            Professional Wig Styling Studio<br>
+                            Limassol Marina District<br>
+                            Limassol, Cyprus
+                        </p>
+                        <a href="#" class="btn btn-outline-primary">
+                            <i class="fas fa-directions me-2"></i>Get Directions
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6 fade-in">
+                <div class="card h-100 glass-card text-center">
+                    <div class="card-body p-4">
+                        <div class="service-icon mb-4">
+                            <i class="fas fa-phone fa-3x text-gradient"></i>
+                        </div>
+                        <h4 class="fw-bold mb-3">Call Us</h4>
+                        <p class="text-muted mb-3">
+                            <strong>Sales:</strong> +234 8166309083<br>
+                            <strong>Support:</strong> +234 8166309083<br>
+                            <strong>Appointments:</strong> +234 8166309083
+                        </p>
+                        <a href="tel:+2348166309083" class="btn btn-outline-primary">
+                            <i class="fas fa-phone me-2"></i>Call Now
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6 fade-in">
+                <div class="card h-100 glass-card text-center">
+                    <div class="card-body p-4">
+                        <div class="service-icon mb-4">
+                            <i class="fas fa-envelope fa-3x text-gradient"></i>
+                        </div>
+                        <h4 class="fw-bold mb-3">Email Us</h4>
+                        <p class="text-muted mb-3">
+                            <strong>General:</strong> chika.ambrose@gmail.com<br>
+                            <strong>Support:</strong> chika.ambrose@gmail.com<br>
+                            <strong>Orders:</strong> chika.ambrose@gmail.com
+                        </p>
+                        <a href="mailto:chika.ambrose@gmail.com" class="btn btn-outline-primary">
+                            <i class="fas fa-envelope me-2"></i>Send Email
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Form & Map -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row g-5">
+            <!-- Contact Form -->
+            <div class="col-lg-6 fade-in">
+                <div class="card glass-card">
+                    <div class="card-header bg-gradient-primary text-white">
+                        <h4 class="mb-0">
+                            <i class="fas fa-paper-plane me-2"></i>Send us a Message
+                        </h4>
+                    </div>
+                    <div class="card-body p-4">
+                        <form id="contactForm">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="firstName" class="form-label fw-bold">First Name *</label>
+                                    <input type="text" class="form-control" id="firstName" name="firstName" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="lastName" class="form-label fw-bold">Last Name *</label>
+                                    <input type="text" class="form-control" id="lastName" name="lastName" required>
+                                </div>
+                                <div class="col-12">
+                                    <label for="email" class="form-label fw-bold">Email Address *</label>
+                                    <input type="email" class="form-control" id="email" name="email" required>
+                                </div>
+                                <div class="col-12">
+                                    <label for="phone" class="form-label fw-bold">Phone Number</label>
+                                    <input type="tel" class="form-control" id="phone" name="phone">
+                                </div>
+                                <div class="col-12">
+                                    <label for="subject" class="form-label fw-bold">Subject *</label>
+                                    <select class="form-select" id="subject" name="subject" required>
+                                        <option value="">Select a subject</option>
+                                        <option value="general">General Inquiry</option>
+                                        <option value="product">Product Question</option>
+                                        <option value="order">Order Support</option>
+                                        <option value="appointment">Book Appointment</option>
+                                        <option value="complaint">Complaint</option>
+                                        <option value="compliment">Compliment</option>
+                                    </select>
+                                </div>
+                                <div class="col-12">
+                                    <label for="message" class="form-label fw-bold">Message *</label>
+                                    <textarea class="form-control" id="message" name="message" rows="5" 
+                                              placeholder="Tell us how we can help you..." required></textarea>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="newsletter" name="newsletter">
+                                        <label class="form-check-label" for="newsletter">
+                                            Subscribe to our newsletter for updates and exclusive offers
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <button type="submit" class="btn btn-primary w-100">
+                                        <i class="fas fa-paper-plane me-2"></i>Send Message
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Map & Business Hours -->
+            <div class="col-lg-6 fade-in">
+                <!-- Map Placeholder -->
+                <div class="card glass-card mb-4">
+                    <div class="card-header bg-gradient-secondary text-white">
+                        <h5 class="mb-0">
+                            <i class="fas fa-map me-2"></i>Find Us
+                        </h5>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="bg-gradient-accent d-flex align-items-center justify-content-center text-white" 
+                             style="height: 250px;">
+                            <div class="text-center">
+                                <i class="fas fa-map-marked-alt fa-4x mb-3"></i>
+                                <h5>Interactive Map</h5>
+                                <p class="mb-0">Map integration coming soon</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Business Hours -->
+                <div class="card glass-card">
+                    <div class="card-header bg-gradient-primary text-white">
+                        <h5 class="mb-0">
+                            <i class="fas fa-clock me-2"></i>Business Hours
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <div class="d-flex justify-content-between align-items-center py-2 border-bottom">
+                                    <span class="fw-semibold">Monday - Friday</span>
+                                    <span class="text-muted">9:00 AM - 7:00 PM</span>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="d-flex justify-content-between align-items-center py-2 border-bottom">
+                                    <span class="fw-semibold">Saturday</span>
+                                    <span class="text-muted">10:00 AM - 6:00 PM</span>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="d-flex justify-content-between align-items-center py-2 border-bottom">
+                                    <span class="fw-semibold">Sunday</span>
+                                    <span class="text-muted">12:00 PM - 5:00 PM</span>
+                                </div>
+                            </div>
+                            <div class="col-12 mt-3">
+                                <div class="alert alert-info d-flex align-items-center">
+                                    <i class="fas fa-info-circle me-2"></i>
+                                    <small>Appointments available outside regular hours by request</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FAQ Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="text-center mb-5 fade-in">
+            <h2 class="display-5 fw-bold text-gradient mb-3">Frequently Asked Questions</h2>
+            <p class="lead text-muted">Quick answers to common questions</p>
+        </div>
+        
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="accordion" id="faqAccordion">
+                    <div class="accordion-item glass-card mb-3 fade-in">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" 
+                                    data-bs-target="#faq1" aria-expanded="true" aria-controls="faq1">
+                                <i class="fas fa-shipping-fast me-2 text-primary"></i>
+                                What are your shipping options and delivery times?
+                            </button>
+                        </h2>
+                        <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                We offer standard shipping (3-5 business days) and express shipping (1-2 business days). 
+                                All orders are processed within 24 hours. Free shipping is available on orders over $150.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item glass-card mb-3 fade-in">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" 
+                                    data-bs-target="#faq2" aria-expanded="false" aria-controls="faq2">
+                                <i class="fas fa-undo me-2 text-primary"></i>
+                                What is your return and exchange policy?
+                            </button>
+                        </h2>
+                        <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                We offer a 30-day return policy for unused wigs in original packaging. 
+                                Custom-colored or styled wigs are final sale. Return shipping is free for defective items.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item glass-card mb-3 fade-in">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" 
+                                    data-bs-target="#faq3" aria-expanded="false" aria-controls="faq3">
+                                <i class="fas fa-cut me-2 text-primary"></i>
+                                Do you offer wig installation and styling services?
+                            </button>
+                        </h2>
+                        <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Yes! We have certified stylists available for professional installation, cutting, and styling. 
+                                Book an appointment online or call us to schedule a consultation.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item glass-card mb-3 fade-in">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" 
+                                    data-bs-target="#faq4" aria-expanded="false" aria-controls="faq4">
+                                <i class="fas fa-ruler me-2 text-primary"></i>
+                                How do I choose the right wig size?
+                            </button>
+                        </h2>
+                        <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Most of our wigs come in adjustable sizes (21.5-22.5 inches). We provide a detailed 
+                                size guide with measuring instructions. Contact us for personalized sizing assistance.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item glass-card fade-in">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" 
+                                    data-bs-target="#faq5" aria-expanded="false" aria-controls="faq5">
+                                <i class="fas fa-heart me-2 text-primary"></i>
+                                How do I care for my wig?
+                            </button>
+                        </h2>
+                        <div id="faq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Care instructions vary by wig type. We provide detailed care guides with every purchase 
+                                and offer professional cleaning services. Synthetic wigs require different care than human hair wigs.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Social Media & Newsletter -->
+<section class="py-5 bg-gradient-primary">
+    <div class="container">
+        <div class="row align-items-center text-white">
+            <div class="col-lg-6 fade-in">
+                <h3 class="fw-bold mb-3">Stay Connected</h3>
+                <p class="mb-4">Follow us on social media for the latest styles, tips, and exclusive offers.</p>
+                <div class="d-flex gap-3">
+                    <a href="#" class="btn btn-light btn-lg rounded-circle" style="width: 50px; height: 50px;">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="#" class="btn btn-light btn-lg rounded-circle" style="width: 50px; height: 50px;">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="#" class="btn btn-light btn-lg rounded-circle" style="width: 50px; height: 50px;">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" class="btn btn-light btn-lg rounded-circle" style="width: 50px; height: 50px;">
+                        <i class="fab fa-youtube"></i>
+                    </a>
+                    <a href="#" class="btn btn-light btn-lg rounded-circle" style="width: 50px; height: 50px;">
+                        <i class="fab fa-tiktok"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-6 fade-in">
+                <h3 class="fw-bold mb-3">Newsletter Signup</h3>
+                <p class="mb-4">Get exclusive offers, styling tips, and new product announcements.</p>
+                <form class="d-flex gap-2">
+                    <input type="email" class="form-control form-control-lg" placeholder="Enter your email">
+                    <button type="submit" class="btn btn-light btn-lg px-4">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        // Contact Form Submission
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form data
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData);
+            
+            // Simulate form submission
+            Swal.fire({
+                title: 'Sending Message...',
+                text: 'Please wait while we process your message.',
+                allowOutsideClick: false,
+                showConfirmButton: false,
+                willOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+            
+            // Simulate API call
+            setTimeout(() => {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Message Sent!',
+                    text: 'Thank you for contacting us at chika.ambrose@gmail.com. We\'ll get back to you within 24 hours.',
+                    confirmButtonColor: '#667eea'
+                });
+                
+                // Reset form
+                this.reset();
+            }, 2000);
+        });
+        
+        // Form validation enhancement
+        const form = document.getElementById('contactForm');
+        const inputs = form.querySelectorAll('input[required], select[required], textarea[required]');
+        
+        inputs.forEach(input => {
+            input.addEventListener('blur', function() {
+                if (this.value.trim() === '') {
+                    this.classList.add('is-invalid');
+                } else {
+                    this.classList.remove('is-invalid');
+                    this.classList.add('is-valid');
+                }
+            });
+        });
+        
+        // Email validation
+        const emailInput = document.getElementById('email');
+        emailInput.addEventListener('blur', function() {
+            const atSymbol = String.fromCharCode(64); // at symbol
+            if (this.value.includes(atSymbol) && this.value.includes('.')) {
+                this.classList.remove('is-invalid');
+                this.classList.add('is-valid');
+            } else {
+                this.classList.add('is-invalid');
+            }
+        });
+    </script>
+    
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+}
