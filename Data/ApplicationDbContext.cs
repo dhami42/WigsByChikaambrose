@@ -24,7 +24,16 @@ public class ApplicationDbContext : DbContext
         {
             entity.HasKey(p => p.Id);
             entity.HasIndex(p => p.SKU).IsUnique();
-            entity.Property(p => p.Price).HasColumnType("decimal(18,2)");
+            
+            // Configure decimal precision for both SQL Server and PostgreSQL
+            if (Database.IsNpgsql())
+            {
+                entity.Property(p => p.Price).HasColumnType("decimal(18,2)");
+            }
+            else
+            {
+                entity.Property(p => p.Price).HasColumnType("decimal(18,2)");
+            }
             
             entity.HasOne(p => p.Category)
                 .WithMany(c => c.Products)
