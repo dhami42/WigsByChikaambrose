@@ -1,0 +1,12 @@
+{
+  "AivenDatabase": {
+    "Host": "pg-7b4c9ee-damiolorode-46c3.e.aivencloud.com",
+    "Port": 23313,
+    "Database": "defaultdb",
+    "Username": "avnadmin",
+    "Password": "AVNS_It8Wjir4KqYCYGHj6YHSSL",
+    "SslMode": "Require",
+    "ConnectionUri": "postgres://avnadmin:AVNS_It8Wjir4KqYCYGHj6YHSSL@pg-7b4c9ee-damiolorode-46c3.e.aivencloud.com:23313/defaultdb?sslmode=require",
+    "Notes": "Aiven PostgreSQL database for WigsByChikaambrose production deployment"
+  }
+}
