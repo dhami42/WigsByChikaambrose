@@ -5,7 +5,17 @@ using WigsByChikaambrose.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Load secure configuration if available (for development with real database)
+// Load secure configuration files if available (for development with real database)
+// These files are in .gitignore and won't be pushed to GitHub
+if (builder.Environment.IsDevelopment())
+{
+    var localConfigPath = Path.Combine(builder.Environment.ContentRootPath, "appsettings.Development.LOCAL.json");
+    if (File.Exists(localConfigPath))
+    {
+        builder.Configuration.AddJsonFile("appsettings.Development.LOCAL.json", optional: true, reloadOnChange: true);
+    }
+}
+
 var secureConfigPath = Path.Combine(builder.Environment.ContentRootPath, "appsettings.Production.SECURE.json");
 if (File.Exists(secureConfigPath))
 {

@@ -363,7 +363,9 @@ MigrationBackup/
 FodyWeavers.xsd
 # Security - Sensitive configuration files
 *.SECURE.json
+*.LOCAL.json
 appsettings.Production.SECURE.json
+appsettings.Development.LOCAL.json
 connection-test.json
 
 # Environment variables and secrets
