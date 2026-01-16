@@ -5,33 +5,35 @@ using WigsByChikaambrose.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Configure Kestrel for Render deployment
+// Load secure configuration if available (for development with real database)
+var secureConfigPath = Path.Combine(builder.Environment.ContentRootPath, "appsettings.Production.SECURE.json");
+if (File.Exists(secureConfigPath))
+{
+    builder.Configuration.AddJsonFile("appsettings.Production.SECURE.json", optional: true, reloadOnChange: true);
+}
+
+// Configure Kestrel for deployment
 builder.WebHost.ConfigureKestrel(options =>
 {
-    options.ListenAnyIP(8080); // Render uses port 8080
+    // Only override port for production/Docker environments
+    if (builder.Environment.IsProduction() || Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER") == "true")
+    {
+        options.ListenAnyIP(8080); // Render/Docker uses port 8080
+    }
+    // For development, let Visual Studio launch settings control the port
 });
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-// Configure database connection for production
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+// Configure PostgreSQL database connection with Aiven credentials
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? 
+    Environment.GetEnvironmentVariable("DATABASE_URL") ?? 
+    "Host=localhost;Port=5432;Database=wigsbychikaambrose;Username=postgres;Password=your_password_here";
 
-// Use PostgreSQL for production (Render's free database) or SQL Server for development
-if (builder.Environment.IsProduction())
-{
-    // For Render deployment - use PostgreSQL
-    builder.Services.AddDbContext<ApplicationDbContext>(options =>
-        options.UseNpgsql(connectionString ?? 
-            Environment.GetEnvironmentVariable("DATABASE_URL") ?? 
-            "Host=localhost;Database=wigsby_chikaambrose;Username=postgres;Password=password"));
-}
-else
-{
-    // For development - use SQL Server
-    builder.Services.AddDbContext<ApplicationDbContext>(options =>
-        options.UseSqlServer(connectionString ?? "Server=(localdb)\\mssqllocaldb;Database=WigsByChikaambrose;Trusted_Connection=true;MultipleActiveResultSets=true"));
-}
+// Use PostgreSQL for all environments (Aiven database)
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseNpgsql(connectionString));
 
 // Add services
 builder.Services.AddScoped<IProductService, ProductService>();
@@ -94,9 +96,12 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}")
     .WithStaticAssets();
 
-// Configure port for Render
-var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
-app.Urls.Add($"http://0.0.0.0:{port}");
+// Configure port for Render deployment only
+if (app.Environment.IsProduction() || Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER") == "true")
+{
+    var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
+    app.Urls.Add($"http://0.0.0.0:{port}");
+}
 
 app.Run();
 

@@ -19,21 +19,14 @@ public class ApplicationDbContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
         
-        // Product configuration
+        // Product configuration - PostgreSQL optimized
         modelBuilder.Entity<Product>(entity =>
         {
             entity.HasKey(p => p.Id);
             entity.HasIndex(p => p.SKU).IsUnique();
             
-            // Configure decimal precision for both SQL Server and PostgreSQL
-            if (Database.IsNpgsql())
-            {
-                entity.Property(p => p.Price).HasColumnType("decimal(18,2)");
-            }
-            else
-            {
-                entity.Property(p => p.Price).HasColumnType("decimal(18,2)");
-            }
+            // PostgreSQL decimal configuration
+            entity.Property(p => p.Price).HasColumnType("decimal(18,2)");
             
             entity.HasOne(p => p.Category)
                 .WithMany(c => c.Products)
